@@ -1,0 +1,4 @@
+C:\Users\Immortal\Desktop\MyCoin\MyCoin\MyCoin\bin\Debug\MyCoin.exe
+C:\Users\Immortal\Desktop\MyCoin\MyCoin\MyCoin\bin\Debug\MyCoin.pdb
+C:\Users\Immortal\Desktop\MyCoin\MyCoin\MyCoin\obj\x86\Debug\MyCoin.exe
+C:\Users\Immortal\Desktop\MyCoin\MyCoin\MyCoin\obj\x86\Debug\MyCoin.pdb

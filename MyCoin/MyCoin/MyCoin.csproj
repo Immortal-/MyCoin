@@ -9,6 +9,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MyCoin</RootNamespace>
     <AssemblyName>MyCoin</AssemblyName>
+    <StartupObject>MyCoin.MainClass</StartupObject>
+    <CodePage>65001</CodePage>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>

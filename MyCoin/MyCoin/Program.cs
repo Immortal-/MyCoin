@@ -25,7 +25,7 @@ namespace MyCoin
 
 				while(true)
 				{
-					_Log ("Server initilized on port: " + _port);
+					_Log ("Server initilized on port: {0}", _port);
 					TcpClient client = server.AcceptTcpClient();
 					_Log ("Client connected!");
 					data = null;

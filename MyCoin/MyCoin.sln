@@ -21,7 +21,7 @@ Global
 		{D707977B-8E1A-4E91-8324-8B049176AA4E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MyCoin_Client\MyCoin_Client.csproj
+		StartupItem = MyCoin\MyCoin_Server.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = null

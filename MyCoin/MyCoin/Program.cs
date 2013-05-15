@@ -3,19 +3,19 @@ using System.Net.Sockets;
 using System.Net;
 using System.Diagnostics;
 using System.Text;
-using System.Threading;
 
 namespace MyCoin
 {
 	class MainClass
 	{
 		private static int _port = 2565;
-		private static IPAddress _ip = Dns.GetHostEntry (Dns.GetHostName ()).AddressList[0];
-		private static IPEndPoint _ipend = new IPEndPoint(_ip, 0);
+		private static IPAddress _ip = IPAddress.Parse("0.0.0.0");
 
 		public static void Main (string[] args)
 		{
 			TcpListener server = null;
+			TcpClient client = null;
+
 			try{
 
 				server = new TcpListener(_ip,_port);
@@ -25,8 +25,8 @@ namespace MyCoin
 
 				while(true)
 				{
-					_Log ("Server initilized on port: {0}", _port);
-					TcpClient client = server.AcceptTcpClient();
+					_Log ("Server waiting on port: {0}", _port);
+					 client = server.AcceptTcpClient();
 					_Log ("Client connected!");
 					data = null;
 					NetworkStream stream = client.GetStream();
@@ -37,31 +37,53 @@ namespace MyCoin
 						data = Encoding.ASCII.GetString(bytes, 0, i);
 						_Log("Recived: {0}",data);
 						data = data.ToUpper();
-						byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-						stream.Write(msg, 0, msg.Length);
-						_Log("Sent: {0}",data);
+
+						switch(data){
+						 case "DISC":
+							try{
+							_Log ("Client Disconnected!");
+							client.Close();
+							}catch(ObjectDisposedException e){
+								_Log (e);
+								server.Stop();
+								server.Start();
+								//my attempt to see if this would fix this objectDisposed bug
+							}
+							break;
+						}
+
+					//	byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
+						//stream.Write(msg, 0, msg.Length);
+						//_Log("Sent: {0}",data);
 					}
-					client.Close();
 				}
 
 			}catch(SocketException e)
 			{
 				_Log(e);
-			} 
-			finally
-			{
+			} catch(ObjectDisposedException e){
+				_Log (e);
 				server.Stop();
+				server.Start();
+				//my attempt to see if this would fix this objectDisposed bug
 			}
 
 			Process.GetCurrentProcess().WaitForExit();
 		}
 
+		//OVERLOAD: used for displaying ObjectDisposedException to the console
+		private static void _Log(ObjectDisposedException e)
+		{
+			string myDate;
+			myDate = DateTime.Now.ToString("MM/dd/yyyy");
+			Console.WriteLine("{0} {1} | {2} | Message: {3} Inner Exception: {4}" + Environment.NewLine,"[Error]",DateTime.Now.ToShortTimeString(),myDate,e.Message,e.InnerException);
+		}
 		//OVERLOAD: used for displaying socket exceptions to the console
 		private static void _Log(SocketException e)
 		{
 			string myDate;
 			myDate = DateTime.Now.ToString("MM/dd/yyyy");
-			Console.WriteLine("{0} {1} | {2} | {3}" + Environment.NewLine,"[Error]",DateTime.Now.ToShortTimeString(),myDate,e);
+			Console.WriteLine("{0} {1} | {2} | Message: {3} Inner Exception: {4}" + Environment.NewLine,"[Error]",DateTime.Now.ToShortTimeString(),myDate,e.Message,e.InnerException);
 		}
 		//Used to display text to the console
 		private static void _Log(string message)

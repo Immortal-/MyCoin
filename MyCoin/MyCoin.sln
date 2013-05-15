@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCoin", "MyCoin\MyCoin.csproj", "{BFFBDEC7-0A7C-4969-A139-F0121265689B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCoin_Server", "MyCoin\MyCoin_Server.csproj", "{BFFBDEC7-0A7C-4969-A139-F0121265689B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCoin_Client", "MyCoin_Client\MyCoin_Client.csproj", "{D707977B-8E1A-4E91-8324-8B049176AA4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,9 +15,13 @@ Global
 		{BFFBDEC7-0A7C-4969-A139-F0121265689B}.Debug|x86.Build.0 = Debug|x86
 		{BFFBDEC7-0A7C-4969-A139-F0121265689B}.Release|x86.ActiveCfg = Release|x86
 		{BFFBDEC7-0A7C-4969-A139-F0121265689B}.Release|x86.Build.0 = Release|x86
+		{D707977B-8E1A-4E91-8324-8B049176AA4E}.Debug|x86.ActiveCfg = Debug|x86
+		{D707977B-8E1A-4E91-8324-8B049176AA4E}.Debug|x86.Build.0 = Debug|x86
+		{D707977B-8E1A-4E91-8324-8B049176AA4E}.Release|x86.ActiveCfg = Release|x86
+		{D707977B-8E1A-4E91-8324-8B049176AA4E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MyCoin\MyCoin.csproj
+		StartupItem = MyCoin_Client\MyCoin_Client.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = null

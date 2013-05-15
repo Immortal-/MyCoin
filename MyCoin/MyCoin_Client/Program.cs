@@ -13,11 +13,39 @@ namespace MyCoin_Client
 
 		public static void Main (string[] args)
 		{
+		Begin:
 			string message = Console.ReadLine();
 			Send (message);
-			Process.GetCurrentProcess().WaitForExit();
-		}
+			switch(message){
+			case "diff":
+				string diffaculty = Recive();
+				_Log(diffaculty);
+				break;
+			}
 
+			goto Begin;
+			//_Log(Recive());
+		}
+		private static string Recive()
+		{
+			Byte[] _bytes = new Byte[256];
+			try{
+				TcpClient client = new TcpClient();
+				client.Connect(_ip,_port);
+				
+				NetworkStream stream = client.GetStream();
+				String responseData = String.Empty;
+				Int32 bytes = stream.Read(_bytes, 0, 256);
+				responseData = Encoding.ASCII.GetString(_bytes, 0, bytes);
+				stream.Dispose();         
+				client.Close();  
+
+				return responseData;     
+			}catch(SocketException e){
+				_Log (e);
+			}
+			return "Error!";
+		}
 		private static void Send(string message)
 		{
 			Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);     

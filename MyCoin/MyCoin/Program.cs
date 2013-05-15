@@ -10,6 +10,7 @@ namespace MyCoin
 	{
 		private static int _port = 2565;
 		private static IPAddress _ip = IPAddress.Parse("0.0.0.0");
+		private static int DIFF = 5;
 
 		public static void Main (string[] args)
 		{
@@ -42,13 +43,23 @@ namespace MyCoin
 						 case "DISC":
 							try{
 							_Log ("Client Disconnected!");
-							client.Close();
+								break;
 							}catch(ObjectDisposedException e){
 								_Log (e);
-								server.Stop();
-								server.Start();
-								//my attempt to see if this would fix this objectDisposed bug
 							}
+							break;
+						case "RBOOT":
+							server.Stop();
+							System.Threading.Thread.Sleep(2000);
+							server.Start();
+							break;
+						case "DIF":
+							byte[] msg = BitConverter.GetBytes(DIFF);
+							stream.Write(msg,0,msg.Length);
+							break;
+						case "SMT":
+							string key = data.Split(':')[1];
+
 							break;
 						}
 
@@ -63,9 +74,6 @@ namespace MyCoin
 				_Log(e);
 			} catch(ObjectDisposedException e){
 				_Log (e);
-				server.Stop();
-				server.Start();
-				//my attempt to see if this would fix this objectDisposed bug
 			}
 
 			Process.GetCurrentProcess().WaitForExit();

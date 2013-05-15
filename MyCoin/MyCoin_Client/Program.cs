@@ -65,7 +65,7 @@ namespace MyCoin_Client
 		}
 
 		//OVERLOAD: used for displaying socket exceptions to the console
-		private static void _Log(SocketException e)
+		private static void _Log(Exception e)
 		{
 			string myDate;
 			myDate = DateTime.Now.ToString("MM/dd/yyyy");

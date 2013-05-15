@@ -78,16 +78,9 @@ namespace MyCoin
 
 			Process.GetCurrentProcess().WaitForExit();
 		}
-
-		//OVERLOAD: used for displaying ObjectDisposedException to the console
-		private static void _Log(ObjectDisposedException e)
-		{
-			string myDate;
-			myDate = DateTime.Now.ToString("MM/dd/yyyy");
-			Console.WriteLine("{0} {1} | {2} | Message: {3} Inner Exception: {4}" + Environment.NewLine,"[Error]",DateTime.Now.ToShortTimeString(),myDate,e.Message,e.InnerException);
-		}
+		
 		//OVERLOAD: used for displaying socket exceptions to the console
-		private static void _Log(SocketException e)
+		private static void _Log(Exception e)
 		{
 			string myDate;
 			myDate = DateTime.Now.ToString("MM/dd/yyyy");

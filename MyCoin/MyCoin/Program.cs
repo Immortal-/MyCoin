@@ -33,7 +33,7 @@ namespace MyCoin
 					NetworkStream stream = client.GetStream();
 					int i;
 
-					while((i=stream.Read(bytes, 0, bytes.Length))!=0)
+					while (client != null && ((i=stream.Read(bytes, 0, bytes.Length))!=0))
 					{
 						data = Encoding.ASCII.GetString(bytes, 0, i);
 						_Log("Recived: {0}",data);
@@ -43,7 +43,8 @@ namespace MyCoin
 						 case "DISC":
 							try{
 							_Log ("Client Disconnected!");
-								break;
+							client.Close();
+							client = null;
 							}catch(ObjectDisposedException e){
 								_Log (e);
 							}

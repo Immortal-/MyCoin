@@ -3,6 +3,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Diagnostics;
 using System.Text;
+using Dextrey.Crypto;
+using System.Security.Cryptography;
 
 namespace MyCoin
 {
@@ -16,6 +18,7 @@ namespace MyCoin
 		{
 			TcpListener server = null;
 			TcpClient client = null;
+			PolymorphicCryptWrapper pm = new PolymorphicCryptWrapper(new TripleDESCryptoServiceProvider());
 
 			try{
 
@@ -60,10 +63,26 @@ namespace MyCoin
 							stream.WriteByte(_dif);
 							_Log("Diff: {0}",DIFF);
 							break;
-						case "SMT":
-							string key = data.Split(':')[1];
+						}
 
-							break;
+
+						if(data.StartsWith("GEN"))
+						{
+							string _key = data.Split(':')[1];
+							string _coin = pm.Encrypt("Success",_key);
+							byte[] _msg = Encoding.ASCII.GetBytes(_coin);
+							stream.Write(_msg,0,_msg.Length);
+							_Log ("Created a coin, {0}",_coin);
+						}else if(data.StartsWith("SMT")){
+							string key = data.Split(':')[1];
+							string _rcode = data.Split(':')[2];
+							string _value = pm.Decrypt(_rcode,key);
+							
+							if (_value == "Success"){
+								byte[] msg = Encoding.ASCII.GetBytes("valid");
+								stream.Write(msg,0,msg.Length);
+								_Log("Client has successfly mined a coin!");
+							}
 						}
 
 					//	byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);

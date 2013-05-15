@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Dextrey.Crypto;
+using System.Security.Cryptography;
 
 namespace MyCoin_Client
 {
@@ -15,6 +17,7 @@ namespace MyCoin_Client
 
 		public static void Main (string[] args)
 		{
+			PolymorphicCryptWrapper pm = new PolymorphicCryptWrapper(new TripleDESCryptoServiceProvider());
 			try{
 				client.Connect(_ip,_port);
 				stream = client.GetStream();
@@ -26,6 +29,18 @@ namespace MyCoin_Client
 			string message = Console.ReadLine();
 			Send (message);
 			switch(message){
+			case "gen":
+				string _coin = Recive();
+				_Log ("Coin! {0}",_coin);
+				break;
+			case "smt":
+				string _re = Recive();
+				if(_re == "valid"){
+					_Log ("You have found a coin!");
+				}else{
+					_Log("Coin not valid");
+				}
+				break;
 			case "diff":
 				string diffaculty = Recive();
 				_Log(diffaculty);
@@ -43,7 +58,7 @@ namespace MyCoin_Client
 		}
 		private static string Recive()
 		{
-			Byte[] _bytes = new Byte[256];
+			Byte[] _bytes = new Byte[1024];
 			try{			
 				String responseData = String.Empty;
 				Int32 bytes = stream.Read(_bytes, 0, _bytes.Length);

@@ -10,16 +10,31 @@ namespace MyCoin_Client
 	{
 		private static int _port = 2565;
 		private static IPAddress _ip = IPAddress.Parse("127.0.0.1");	
+		private static TcpClient client = new TcpClient();
+		private static NetworkStream stream = null;
 
 		public static void Main (string[] args)
 		{
+			try{
+				client.Connect(_ip,_port);
+				stream = client.GetStream();
+			}catch(Exception e){
+				_Log(e);
+			}
 		Begin:
+
 			string message = Console.ReadLine();
 			Send (message);
 			switch(message){
 			case "diff":
 				string diffaculty = Recive();
 				_Log(diffaculty);
+				break;
+			case "disc":
+				client.Close();
+				stream.Dispose();
+				stream.Close();
+				Process.GetCurrentProcess().Kill();
 				break;
 			}
 
@@ -29,17 +44,10 @@ namespace MyCoin_Client
 		private static string Recive()
 		{
 			Byte[] _bytes = new Byte[256];
-			try{
-				TcpClient client = new TcpClient();
-				client.Connect(_ip,_port);
-				
-				NetworkStream stream = client.GetStream();
+			try{			
 				String responseData = String.Empty;
-				Int32 bytes = stream.Read(_bytes, 0, 256);
+				Int32 bytes = stream.Read(_bytes, 0, _bytes.Length);
 				responseData = Encoding.ASCII.GetString(_bytes, 0, bytes);
-				stream.Dispose();         
-				client.Close();  
-
 				return responseData;     
 			}catch(SocketException e){
 				_Log (e);
@@ -50,15 +58,8 @@ namespace MyCoin_Client
 		{
 			Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);     
 			try{
-				TcpClient client = new TcpClient();
-				client.Connect(_ip,_port);
-
-				NetworkStream stream = client.GetStream();
 				stream.Write(data,0,data.Length);
 				_Log ("Sent: {0}",message);
-				stream.Dispose();
-				client.Close();
-
 			}catch(SocketException e){
 				_Log (e);
 			}

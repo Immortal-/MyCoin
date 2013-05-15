@@ -9,7 +9,7 @@ namespace MyCoin
 	class MainClass
 	{
 		private static int _port = 2565;
-		private static IPAddress _ip = IPAddress.Parse("0.0.0.0");
+		private static IPAddress _ip = IPAddress.Any;
 		private static int DIFF = 5;
 
 		public static void Main (string[] args)
@@ -45,7 +45,7 @@ namespace MyCoin
 							_Log ("Client Disconnected!");
 							client.Close();
 							client = null;
-							}catch(ObjectDisposedException e){
+							}catch(Exception e){
 								_Log (e);
 							}
 							break;
@@ -54,9 +54,11 @@ namespace MyCoin
 							System.Threading.Thread.Sleep(2000);
 							server.Start();
 							break;
-						case "DIF":
-							byte[] msg = BitConverter.GetBytes(DIFF);
-							stream.Write(msg,0,msg.Length);
+						case "DIFF":
+							stream.Flush();
+							byte _dif = Convert.ToByte(DIFF);
+							stream.WriteByte(_dif);
+							_Log("Diff: {0}",DIFF);
 							break;
 						case "SMT":
 							string key = data.Split(':')[1];
@@ -70,11 +72,9 @@ namespace MyCoin
 					}
 				}
 
-			}catch(SocketException e)
+			}catch(Exception e)
 			{
 				_Log(e);
-			} catch(ObjectDisposedException e){
-				_Log (e);
 			}
 
 			Process.GetCurrentProcess().WaitForExit();
@@ -100,6 +100,7 @@ namespace MyCoin
 			string myDate;
 			myDate = DateTime.Now.ToString("MM/dd/yyyy");
 			string _message = message.Replace("{0}",arg1.ToString());
+
 			Console.WriteLine("{0} {1} | {2} | {3}" + Environment.NewLine,"[Server]",DateTime.Now.ToShortTimeString(),myDate,_message);
 		}
 		
